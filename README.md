@@ -20,3 +20,7 @@ You can perform the following:
 # Database
 
 Spring Data JPA - MySQL.
+
+# Preferred IDE 
+ Intellij IDEA Community Edition
+
