@@ -3,10 +3,17 @@ package com.faceRecogAttendance.controller;
 import com.faceRecogAttendance.entity.Student;
 import com.faceRecogAttendance.exception.StudentDetailsNotFound;
 import com.faceRecogAttendance.service.StudentService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -26,7 +33,7 @@ public class StudentController {
     }
 
     @GetMapping("/rollNo")
-    public Student getStudentById(@PathVariable int rollNo) throws StudentDetailsNotFound {
+    public Student getStudentById(@RequestParam("rollNo") int rollNo) throws StudentDetailsNotFound {
 
         Student student = studentService.getStudentById(rollNo);
 
@@ -37,7 +44,8 @@ public class StudentController {
     }
 
     @GetMapping("/name")
-    public Student getStudentByName(@RequestParam("studentName") String studentName) throws StudentDetailsNotFound {
+    public Student getStudentByName(@RequestParam("studentName") String studentName)
+            throws StudentDetailsNotFound {
 
         Student student = studentService.getStudentByName(studentName);
 
@@ -48,15 +56,54 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student addStudent(@RequestBody Student student) throws StudentDetailsNotFound {
+    public Student addStudent(@RequestParam("rollNo") int rollNo, @RequestParam("name") String name,
+                              @RequestParam("attendance") String attendance,
+                              @RequestParam("image") MultipartFile image)
+            throws StudentDetailsNotFound, IOException, SQLException {
 
+        byte[] bytesImage = image.getBytes();
+        //Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+
+           Student student= new Student();
+           student.setRollNo(rollNo);
+           student.setStudentName(name);
+           student.setAttendance(attendance);
+           student.setDate(new Date());
+           student.setImage(bytesImage);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        //Student studentMapper= objectMapper.readValue(student, Student.class);
         return studentService.saveStudent(student);
     }
 
-    @PutMapping
-    public Student updateStudent(@RequestBody Student student) throws StudentDetailsNotFound {
+//    @PostMapping("/image")
+//    public String addImage(@RequestParam("Image") MultipartFile image) throws IOException {
+//        System.out.println(image.getName());
+//        System.out.println(image.getSize());
+//
+//        return "Image has been uploaded successfully "+ studentService.saveImage(image);
+//    }
 
-        return studentService.updateStudent(student);
+    @PutMapping
+    public Student updateStudent(@RequestParam("rollNo") int rollNo, @RequestParam("name") String name,
+                              @RequestParam("attendance") String attendance,
+                              @RequestParam("image") MultipartFile image)
+            throws StudentDetailsNotFound, IOException, SQLException {
+
+        byte[] bytesImage = image.getBytes();
+
+        Student student = new Student();
+        student.setRollNo(rollNo);
+        student.setStudentName(name);
+        student.setAttendance(attendance);
+        student.setDate(new Date());
+        student.setImage(bytesImage);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+        return studentService.saveStudent(student);
     }
 
     @DeleteMapping

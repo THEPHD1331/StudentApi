@@ -3,10 +3,15 @@ package com.faceRecogAttendance.service;
 import com.faceRecogAttendance.entity.Student;
 import com.faceRecogAttendance.exception.StudentDetailsNotFound;
 import com.faceRecogAttendance.repository.StudentRepository;
+import com.faceRecogAttendance.util.ImageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.sql.Blob;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +36,10 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public Student getStudentById(int rollNo) throws StudentDetailsNotFound {
         Optional<Student> result = studentRepo.findById(rollNo);
-        Student theStu=null;
+        Student theStu=result.get();
 
-        if(result.isPresent()){
-            theStu=result.get();
-        }
-        else{
-            throw new StudentDetailsNotFound("Did not find the Student Id: "+ rollNo);
+        if(result==null) {
+            throw new StudentDetailsNotFound("Did not find the Student Id: " + rollNo);
         }
         log.info("Getting student by rolNo");
         return theStu;
@@ -56,10 +58,11 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student saveStudent(Student student) throws StudentDetailsNotFound {
+    public Student saveStudent(Student student) throws StudentDetailsNotFound, IOException {
 
         log.info("Save Student Impl");
-        return studentRepo.save(student);
+        //studentRepo.save(Student.builder().image(ImageUtil.compressImage(image.getBytes())).build());
+        return studentRepo.save(student) ;
     }
 
     @Override
@@ -73,4 +76,11 @@ public class StudentServiceImpl implements StudentService{
         log.info("Delete Student impl");
         studentRepo.deleteById(rollNo);
     }
+
+//    @Override
+//    public String saveImage(MultipartFile image) throws IOException {
+//        studentRepo.save(Student.builder().image(ImageUtil.compressImage(image.getBytes())).build());
+//
+//        return "Image has been Uploaded successfully: "+ image.getName()+" of size: "+image.getSize();
+//    }
 }
