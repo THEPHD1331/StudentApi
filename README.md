@@ -1,7 +1,9 @@
 # StudentApi
-This is a Spring boot REST API 
+This is a Spring boot REST API for iAttend.
 
-We perform CRUD operations on a list of Students.
+We perform CRUD operations on a list of Students for attendance.
+
+Students details - Roll no, Name, Attendance, Date and thier image.
 
 You can perform the following:
 
@@ -23,4 +25,7 @@ Spring Data JPA - MySQL.
 
 # Preferred IDE 
  Intellij IDEA Community Edition
+
+ # API Testing
+ Postman
 
