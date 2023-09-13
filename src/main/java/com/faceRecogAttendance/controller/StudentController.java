@@ -6,6 +6,10 @@ import com.faceRecogAttendance.service.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +27,7 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public List<Student> getAllStudents() throws StudentDetailsNotFound {
         List<Student> students = studentService.getAllStudents();
@@ -44,6 +49,7 @@ public class StudentController {
     }
 
     @GetMapping("/name")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Student getStudentByName(@RequestParam("studentName") String studentName)
             throws StudentDetailsNotFound {
 
@@ -56,6 +62,7 @@ public class StudentController {
     }
 
     @PostMapping
+    @CrossOrigin(origins = "http://localhost:3000")
     public Student addStudent(@RequestParam("rollNo") int rollNo, @RequestParam("name") String name,
                               @RequestParam("attendance") String attendance,
                               @RequestParam("image") MultipartFile image)
@@ -75,6 +82,19 @@ public class StudentController {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         //Student studentMapper= objectMapper.readValue(student, Student.class);
         return studentService.saveStudent(student);
+    }
+
+    @GetMapping("/display")
+    public ResponseEntity<byte[]> displayImage(@RequestParam("rollNo") int rollNo) throws IOException, SQLException, StudentDetailsNotFound {
+        Student image = studentService.getImageById(rollNo);
+        byte [] imageBytes = null;
+        imageBytes = image.getImage();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        //.getClass(1,(int) image.getImage().length);
+        //return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
 //    @PostMapping("/image")

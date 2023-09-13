@@ -77,6 +77,11 @@ public class StudentServiceImpl implements StudentService{
         studentRepo.deleteById(rollNo);
     }
 
+    @Override
+    public Student getImageById(int rollNo) {
+        return studentRepo.findById(rollNo).get();
+    }
+
 //    @Override
 //    public String saveImage(MultipartFile image) throws IOException {
 //        studentRepo.save(Student.builder().image(ImageUtil.compressImage(image.getBytes())).build());

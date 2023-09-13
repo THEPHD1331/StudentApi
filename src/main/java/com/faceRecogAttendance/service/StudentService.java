@@ -17,4 +17,5 @@ public interface StudentService {
     Student updateStudent(Student student) throws StudentDetailsNotFound;
     void deleteStudentById(int rollNo) throws StudentDetailsNotFound;
     //String saveImage(MultipartFile image) throws IOException;
+    Student getImageById(int rollNo);
 }
