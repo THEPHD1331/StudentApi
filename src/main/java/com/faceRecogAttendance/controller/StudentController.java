@@ -38,7 +38,7 @@ public class StudentController {
     }
 
     @GetMapping("/rollNo")
-    public Student getStudentById(@RequestParam("rollNo") int rollNo) throws StudentDetailsNotFound {
+    public Student getStudentById(@RequestParam int rollNo) throws StudentDetailsNotFound {
 
         Student student = studentService.getStudentById(rollNo);
 
@@ -61,41 +61,48 @@ public class StudentController {
         return student;
     }
 
-    @PostMapping
     @CrossOrigin(origins = "http://localhost:3000")
-    public Student addStudent(@RequestParam("rollNo") int rollNo, @RequestParam("name") String name,
-                              @RequestParam("attendance") String attendance,
-                              @RequestParam("image") MultipartFile image)
-            throws StudentDetailsNotFound, IOException, SQLException {
+    @PostMapping  // Post request to add a new student
+    public Student addEmployee(@RequestBody Student student) throws StudentDetailsNotFound, IOException {
 
-        byte[] bytesImage = image.getBytes();
-        //Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-
-           Student student= new Student();
-           student.setRollNo(rollNo);
-           student.setStudentName(name);
-           student.setAttendance(attendance);
-           student.setDate(new Date());
-           student.setImage(bytesImage);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        //Student studentMapper= objectMapper.readValue(student, Student.class);
         return studentService.saveStudent(student);
     }
 
-    @GetMapping("/display")
-    public ResponseEntity<byte[]> displayImage(@RequestParam("rollNo") int rollNo) throws IOException, SQLException, StudentDetailsNotFound {
-        Student image = studentService.getImageById(rollNo);
-        byte [] imageBytes = null;
-        imageBytes = image.getImage();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-        //.getClass(1,(int) image.getImage().length);
-        //return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+//    @PostMapping
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public Student addStudent(@RequestParam("rollNo") int rollNo, @RequestParam("name") String name,
+//                              @RequestParam("attendance") String attendance,
+//                              @RequestParam("image") MultipartFile image)
+//            throws StudentDetailsNotFound, IOException, SQLException {
+//
+//        byte[] bytesImage = image.getBytes();
+//        //Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+//
+//           Student student= new Student();
+//           student.setRollNo(rollNo);
+//           student.setStudentName(name);
+//           student.setAttendance(attendance);
+//           student.setDate(new Date());
+//           student.setImage(bytesImage);
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//        //Student studentMapper= objectMapper.readValue(student, Student.class);
+//        return studentService.saveStudent(student);
+//    }
 
-        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-    }
+//    @GetMapping("/display")
+//    public ResponseEntity<byte[]> displayImage(@RequestParam("rollNo") int rollNo) throws IOException, SQLException, StudentDetailsNotFound {
+//        Student image = studentService.getImageById(rollNo);
+//        byte [] imageBytes = null;
+//        imageBytes = image.getImage();
+//        HttpHeaders headers= new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_PNG);
+//        //.getClass(1,(int) image.getImage().length);
+//        //return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+//
+//        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+//    }
 
 //    @PostMapping("/image")
 //    public String addImage(@RequestParam("Image") MultipartFile image) throws IOException {
@@ -105,26 +112,26 @@ public class StudentController {
 //        return "Image has been uploaded successfully "+ studentService.saveImage(image);
 //    }
 
-    @PutMapping
-    public Student updateStudent(@RequestParam("rollNo") int rollNo, @RequestParam("name") String name,
-                              @RequestParam("attendance") String attendance,
-                              @RequestParam("image") MultipartFile image)
-            throws StudentDetailsNotFound, IOException, SQLException {
-
-        byte[] bytesImage = image.getBytes();
-
-        Student student = new Student();
-        student.setRollNo(rollNo);
-        student.setStudentName(name);
-        student.setAttendance(attendance);
-        student.setDate(new Date());
-        student.setImage(bytesImage);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
-        return studentService.saveStudent(student);
-    }
+//    @PutMapping
+//    public Student updateStudent(@RequestParam("rollNo") int rollNo, @RequestParam("name") String name,
+//                              @RequestParam("attendance") String attendance,
+//                              @RequestParam("image") MultipartFile image)
+//            throws StudentDetailsNotFound, IOException, SQLException {
+//
+//        byte[] bytesImage = image.getBytes();
+//
+//        Student student = new Student();
+//        student.setRollNo(rollNo);
+//        student.setStudentName(name);
+//        student.setAttendance(attendance);
+//       // student.setDate(new Date());
+//        student.setImage(bytesImage);
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//
+//        return studentService.saveStudent(student);
+//    }
 
     @DeleteMapping
     public String deleteStudent(@RequestParam("rollNo") int rollNo) throws StudentDetailsNotFound {

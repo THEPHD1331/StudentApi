@@ -18,11 +18,11 @@ public class Student {
 
     @Column(name = "Attendance")
     private String attendance;
+//
+//    @Column(name = "Date")
+//    private Date date;
 
-    @Column(name = "Date")
-    private Date date;
-
-    @Column(name = "Image", length = 40000000)
-    @Lob
-    private byte[] image;
+//    @Column(name = "Image", length = 40000000)
+//    @Lob
+//    private byte[] image;
 }
