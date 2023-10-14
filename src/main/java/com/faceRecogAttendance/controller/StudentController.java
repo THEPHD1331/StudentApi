@@ -38,6 +38,7 @@ public class StudentController {
     }
 
     @GetMapping("/rollNo")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Student getStudentById(@RequestParam int rollNo) throws StudentDetailsNotFound {
 
         Student student = studentService.getStudentById(rollNo);

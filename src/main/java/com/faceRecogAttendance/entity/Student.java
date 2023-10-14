@@ -2,7 +2,7 @@ package com.faceRecogAttendance.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Date;
+
 
 @Entity
 @Data
@@ -16,11 +16,11 @@ public class Student {
     @Column(name = "Name")
     private String studentName;
 
-    @Column(name = "Attendance")
-    private String attendance;
-//
+    @Column(name = "year")
+    private String year;
+
 //    @Column(name = "Date")
-//    private Date date;
+//    private Date date = new Date();
 
 //    @Column(name = "Image", length = 40000000)
 //    @Lob
