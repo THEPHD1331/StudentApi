@@ -3,7 +3,7 @@ This is a Spring boot REST API for iAttend.
 
 We perform CRUD operations on a list of Students for attendance.
 
-Students details - Roll no, Name, Attendance, Date and thier image.
+Students details - Roll no, Name, Attendance, Date.
 
 You can perform the following:
 
