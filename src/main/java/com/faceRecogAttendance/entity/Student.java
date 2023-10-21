@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "students_4thyear")
+@Data
 public class Student {
 
     @Id
@@ -22,38 +23,4 @@ public class Student {
 //    @Lob
 //    private byte[] image;
 
-
-    public Student(int rollNo, String studentName, String year) {
-        this.rollNo = rollNo;
-        this.studentName = studentName;
-        this.year = year;
-    }
-
-    public Student(){
-
-    }
-
-    public int getRollNo() {
-        return rollNo;
-    }
-
-    public void setRollNo(int rollNo) {
-        this.rollNo = rollNo;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
 }
